@@ -1,0 +1,7 @@
+#!/bin/bash
+f=LHCbPresentation12
+if pdflatex $f.tex
+then
+  pdflatex $f.tex
+  rm $f.{aux,log,nav,out,snm,toc}
+fi
