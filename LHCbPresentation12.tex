@@ -177,7 +177,6 @@
   \begin{itemize}
     \setlength\itemsep{0.5em}
     \item{Identical formalism to BPGGSZ analyses with $D^0\to K_S^0h^+h^-$}
-    \item{Split events into bins of phase space}
     \item{LHCb: Measure CP asymmetries in each bin}
     \item{BESIII: Measure the cosine (sine) of the strong-phase difference $c_i$ ($s_i$)}
   \end{itemize}
@@ -199,10 +198,10 @@
     \Large{How to measure $c_i$ and $s_i$? Sneha already introduced BESIII in last week's seminar!}
   \end{center}
   \begin{enumerate}
-    \setlength\itemsep{1.0em}
+    \setlength\itemsep{0.7em}
     \item{Measure the double-tag yields}
     \item{Tags with different CP content can enhance/suppress yields}
-    \item{Infer $c_i$ and $s_i$ in a large simultaneous fit of all tags}
+    \item{Infer $c_i$ and $s_i$ in a large simultaneous fit of all 19 tag modes}
   \end{enumerate}
   \begin{figure}
     \centering
@@ -295,20 +294,17 @@
   \end{figure}
 \end{frame}
 
-\begin{frame}{Double tag fit of $KK\pi\pi$ vs $K_S\pi^+\pi^-$}
-  \begin{figure}
-    \centering
-    \begin{subfigure}{0.5\textwidth}
-      \centering
-      \includegraphics[width=0.75\textwidth,trim={0 5cm 0 0},clip=true]{Plots/DoubleTagYield_DoubleTag_SCMB_KKpipi_vs_KSpipi_SignalBinP1_TagBin1.pdf}
-      \caption{Bin $(1, 1)$ yield: $8.2_{-2.7}^{+3.3}$}
-    \end{subfigure}%
-    \begin{subfigure}{0.5\textwidth}
-      \centering
-      \includegraphics[width=0.75\textwidth,trim={0 5cm 0 0},clip=true]{Plots/DoubleTagYield_DoubleTag_SCMB_KKpipi_vs_KSpipi_SignalBinM1_TagBin4.pdf}
-      \caption{Bin $(-1, 4)$ yield: $0.9_{-0.7}^{+1.3}$}
-    \end{subfigure}
-  \end{figure}
+\begin{frame}{Toy studies}
+  \begin{center}
+    \Large{Can we trust the results? Let's do some toys!}
+  \end{center}
+  \begin{enumerate}
+    \setlength\itemsep{1.0em}
+    \item{Using model predictions of $c_i$ and $s_i$, predict all DT yields}
+    \item{For each tag mode, generate 1000 toy datasets and fit DT yield}
+    \item{Run 1000 fits of $c_i$ and $s_i$ using fit results from toys}
+    \item{Plots pulls}
+  \end{enumerate}
 \end{frame}
 
 \begin{frame}{Toy studies}
@@ -366,12 +362,364 @@
 \begin{frame}{Toy studies}
   \vspace{0.0cm}
   {\Large What do the toy fits tell us?}
-  \vspace{1.0cm}
+  \vspace{0.5cm}
   \begin{enumerate}
     \setlength\itemsep{2.0em}
     \item{Small bias in $c_i$ which can be corrected}
     \item{$s_i$ pulls are very asymmetric, and uncertainties are not very reliable}
   \end{enumerate}
+  \vspace{1.0cm}
+  \begin{center}
+    \white{\Large How do we determine reliable uncertainties for $s_i$?}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Toy studies}
+  \vspace{0.0cm}
+  {\Large What do the toy fits tell us?}
+  \vspace{0.5cm}
+  \begin{enumerate}
+    \setlength\itemsep{2.0em}
+    \item{Small bias in $c_i$ which can be corrected}
+    \item{$s_i$ pulls are very asymmetric, and uncertainties are not very reliable}
+  \end{enumerate}
+  \vspace{1.0cm}
+  \begin{center}
+    {\Large How do we determine reliable uncertainties for $s_i$?}
+  \end{center}
+\end{frame}
+
+\section{Feldman-Cousins method}
+
+\begin{frame}{Construction of confidence intervals}
+  \begin{center}
+    {\Large What do we need?}
+  \end{center}
+  \begin{itemize}
+    \setlength\itemsep{0.3em}
+    \item{Assign correct uncertainties to non-Gaussian parameters}
+    \item{Obtain a confidence interval with correct $68\%$ coverage}
+  \end{itemize}
+  \vspace{0.3cm}
+  \begin{center}
+    \white{\Large How do we achieve this?}
+  \end{center}
+  \begin{itemize}
+    \setlength\itemsep{0.3em}
+    \item[]{\white{Feldman-Cousins method}}
+    \item[]{\white{Also known as ``Plugin'' method in GammaCombo}}
+    \item[]{\white{It's a ``brute-force'' approach to constructing a confidence interval}}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Construction of confidence intervals}
+  \begin{center}
+    {\Large What do we need?}
+  \end{center}
+  \begin{itemize}
+    \setlength\itemsep{0.3em}
+    \item{Assign correct uncertainties to non-Gaussian parameters}
+    \item{Obtain a confidence interval with correct $68\%$ coverage}
+  \end{itemize}
+  \vspace{0.3cm}
+  \begin{center}
+    {\Large How do we achieve this?}
+  \end{center}
+  \begin{itemize}
+    \setlength\itemsep{0.3em}
+    \item{Feldman-Cousins method}
+    \item{Also known as ``Plugin'' method in GammaCombo}
+    \item{It's a ``brute-force'' approach to constructing a confidence interval}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Feldman-Cousins method}
+  \begin{center}
+    {\Large How to implement Feldman-Cousins method?} \\
+    {At each scan point of $s_1$, perform these fits to data:}
+  \end{center}
+  \begin{enumerate}
+    \setlength\itemsep{0.5em}
+    \item{Fit with all parameters floating, and save the log-likelihood $\chi^2$}
+    \item{Fit with $s_1$ fixed to scan point, and save $\chi^2_{\rm fix}$}
+    \item{Calculate $\Delta\chi^2_{\rm data} = \chi^2_{\rm fix} - \chi^2$}
+  \end{enumerate}
+  \vspace{0.5cm}
+  \begin{center}
+    {We expect $\Delta\chi^2_{\rm data}$ to become large as we move away from best-fit value, but without direct knowledge of underlying PDF, we cannot determine any confidence intervals from this}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Feldman-Cousins method}
+  \begin{center}
+    {\Large How to implement Feldman-Cousins method?} \\
+    {At each scan point of $s_1$, perform toy studies:}
+  \end{center}
+  \begin{enumerate}
+    \setlength\itemsep{0.5em}
+    \item{Fix $s_1$ to scan point and generate $1000$ toys}
+    \item{Perform fits to each toy, with $s_1$ both floating and fixed}
+    \item{Calculate $\Delta\chi^2_{\rm toy}$}
+  \end{enumerate}
+  \vspace{0.5cm}
+  \begin{center}
+    {At each scan point, the fraction of toys with $\Delta\chi^2_{\rm toy} > \Delta\chi^2_{\rm data}$ is equal to $1 - \rm{CL}$, and the exact $68\%$ confidence interval can then be obtained using an interpolation between points}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Toy studies}
+  \begin{figure}
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.75\textwidth]{Plots/Feldman_Cousins_CL_s1.pdf}
+      \caption{$s_1$}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.75\textwidth]{Plots/Feldman_Cousins_CL_s2.pdf}
+      \caption{$s_2$}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.75\textwidth]{Plots/Feldman_Cousins_CL_s3.pdf}
+      \caption{$s_3$}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.75\textwidth]{Plots/Feldman_Cousins_CL_s4.pdf}
+      \caption{$s_4$}
+    \end{subfigure}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Fit results}
+  \begin{figure}
+    \includegraphics[width=0.43\textwidth]{Plots/cisi_FitResults_Model.pdf}
+  \end{figure}
+  \vspace{-0.2cm}
+  \begin{align*}
+    c_1 = -0.37 \pm 0.13 \pm 0.01, \quad s_1 = -0.19_{-0.62}^{+0.21} \pm 0.04, \\
+    c_2 = \phantom{-}0.82 \pm 0.05 \pm 0.01, \quad s_2 = -0.23_{-0.23}^{+0.12} \pm 0.03, \\
+    c_3 = \phantom{-}0.86 \pm 0.05 \pm 0.01, \quad s_3 = \phantom{-}0.56_{-0.35}^{+0.17} \pm 0.06, \\
+    c_4 = -0.35 \pm 0.13 \pm 0.01, \quad s_4 = -0.59_{-0.18}^{+0.47} \pm 0.05, \\
+  \end{align*}
+\end{frame}
+
+\begin{frame}{BESIII paper}
+  \vspace{-0.5cm}
+  \begin{columns}
+    \begin{column}{0.6\textwidth}
+      \begin{enumerate}
+        \setlength\itemsep{1.5em}
+        \item{Paper was ready at the start of MT}
+        \item{Main result: $c_i$ and $s_i$}
+        \item{Additional measurement: $D^0\to K^+K^-\pi^+\pi^-$ branching fraction}
+        \item{Bonus measurement: Simultaneous determination of $\delta_D^{K\pi}$}
+      \end{enumerate}
+    \end{column}
+    \begin{column}{0.4\textwidth}
+      \begin{figure}
+        \includegraphics[width=0.9\textwidth]{Plots/BESIII_paper_1st_page.png}
+      \end{figure}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\section{BESIII analysis review: a brief summary (paraphrased)}
+
+\begin{frame}{BESIII analysis review: a brief summary (paraphrased)}
+  \begin{center}
+    {\large 6th September 2023}
+  \end{center}
+  \begin{figure}
+    \includegraphics[width=0.9\textwidth,trim={0 0 0 0.5cm},clip=true]{Plots/BESIII_review_process_1.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{BESIII analysis review: a brief summary (paraphrased)}
+  \begin{center}
+    {\large 21st September 2023}
+  \end{center}
+  \begin{figure}
+    \includegraphics[width=0.9\textwidth,trim={0 0 0 0.5cm},clip=true]{Plots/BESIII_review_process_2.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{BESIII analysis review: a brief summary (paraphrased)}
+  \begin{center}
+    {\large 22nd September 2023}
+  \end{center}
+  \begin{figure}
+    \includegraphics[width=0.9\textwidth,trim={0 0 0 0.5cm},clip=true]{Plots/BESIII_review_process_3.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{BESIII analysis review: a brief summary (paraphrased)}
+  \begin{center}
+    {\large 22nd September 2023}
+  \end{center}
+  \begin{figure}
+    \includegraphics[width=0.9\textwidth,trim={0 0 0 0.5cm},clip=true]{Plots/BESIII_review_process_4.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{BESIII analysis review: a brief summary (paraphrased)}
+  \begin{center}
+    {\large 30th September 2023}
+  \end{center}
+  \begin{figure}
+    \includegraphics[width=0.9\textwidth,trim={0 0 0 0.5cm},clip=true]{Plots/BESIII_review_process_5.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{BESIII analysis review: a brief summary (paraphrased)}
+  \begin{center}
+    {\large 30th September 2023}
+  \end{center}
+  \begin{figure}
+    \includegraphics[width=0.9\textwidth,trim={0 0 0 0.5cm},clip=true]{Plots/BESIII_review_process_6.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{BESIII analysis review: a brief summary (paraphrased)}
+  \begin{center}
+    {\large 10th October 2023\phantom{p}}
+  \end{center}
+  \begin{figure}
+    \includegraphics[width=0.9\textwidth,trim={0 0 0 0.5cm},clip=true]{Plots/BESIII_review_process_7.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{BESIII analysis review: a brief summary (paraphrased)}
+  \begin{center}
+    {\large 23rd October 2023\phantom{p}}
+  \end{center}
+  \begin{figure}
+    \includegraphics[width=0.9\textwidth,trim={0 0 0 0.5cm},clip=true]{Plots/BESIII_review_process_8.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{BESIII analysis review: a brief summary (paraphrased)}
+  \begin{center}
+    {\large 23rd October 2023\phantom{p}}
+  \end{center}
+  \begin{figure}
+    \includegraphics[width=0.9\textwidth,trim={0 0 0 0.5cm},clip=true]{Plots/BESIII_review_process_9.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{BESIII analysis review: a brief summary (paraphrased)}
+  \begin{center}
+    {\large 6th November 2023\phantom{p}}
+  \end{center}
+  \begin{figure}
+    \includegraphics[width=0.9\textwidth,trim={0 0 0 0.5cm},clip=true]{Plots/BESIII_review_process_10.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{BESIII analysis review: a brief summary (paraphrased)}
+  \begin{center}
+    {\large 20th November 2023\phantom{p}}
+  \end{center}
+  \begin{figure}
+    \includegraphics[width=0.9\textwidth,trim={0 0 0 0.5cm},clip=true]{Plots/BESIII_review_process_11.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{BESIII analysis review: a brief summary (paraphrased)}
+  \begin{center}
+    {\large 20th November 2023\phantom{p}}
+  \end{center}
+  \begin{figure}
+    \includegraphics[width=0.9\textwidth,trim={0 0 0 0.5cm},clip=true]{Plots/BESIII_review_process_12.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{BESIII analysis review: a brief summary (paraphrased)}
+  \begin{center}
+    {\large 20th November 2023\phantom{p}}
+  \end{center}
+  \begin{figure}
+    \includegraphics[width=0.9\textwidth,trim={0 0 0 0.5cm},clip=true]{Plots/BESIII_review_process_13.png}
+  \end{figure}
+\end{frame}
+
+\section{Combined BESIII and LHCb fit of \texorpdfstring{$\gamma$}{gamma}}
+
+\begin{frame}{Combined BESIII and LHCb fit of $\gamma$}
+  \begin{center}
+    {\large How to account for non-Gaussian $s_i$ uncertainties in $\gamma$ analysis?}
+  \end{center}
+  \begin{enumerate}
+    \setlength\itemsep{1.0em}
+    \item{Simultaneous fit of BESIII and LHCb data}
+    \item{Incorporate $B^\pm\to[K^+K^-\pi^+\pi^-]_Dh^\pm$ bin yields into BESIII fit}
+    \item{Free parameters: $\gamma$, $r_B$, $\delta_B$, $F_i$, $c_i$, $s_i$, $K_i$, etc}
+  \end{enumerate}
+  \vspace{0.7cm}
+  \begin{center}
+    {\large Long term plan: Make some likelihood code for $c_i$ and $s_i$ available}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Combined BESIII and LHCb fit of $\gamma$}
+  \begin{center}
+    {\large Cross check with model-dependent $c_i$ and $s_i$:}
+  \end{center}
+  \begin{figure}
+    \includegraphics[width=0.7\textwidth]{Plots/Contours_gamma_deltaB_ModelDependent_Scan.pdf}
+  \end{figure}
+  \begin{center}
+    {\large $\gamma = (112 \pm 13)^\circ$ as expected}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Combined BESIII and LHCb fit of $\gamma$}
+  \begin{center}
+    {\large Then fit LHCb bin yields $c_i$ and $s_i$ simultaneously:}
+  \end{center}
+  \begin{figure}
+    \includegraphics[width=0.7\textwidth]{Plots/Contours_gamma_deltaB_ModelIndependent_Scan.pdf}
+  \end{figure}
+  \begin{center}
+    {\large $\gamma = (127 \pm 15)^\circ$, what happened here?!}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Combined BESIII and LHCb fit of $\gamma$}
+  \begin{center}
+    {\large Confirm with Feldman-Cousins method:}
+  \end{center}
+  \begin{figure}
+    \includegraphics[width=0.5\textwidth]{Plots/FeldmanCousins_gamma.png}
+  \end{figure}
+  \begin{itemize}
+    \setlength\itemsep{0.5em}
+    \item{Good news: $c_i$ and $s_i$ systematic is smaller than expected!}
+    \item{Bad news: Tension has now increased to $4\sigma$!!!}
+    \item{I have looked for bugs everywhere, any suggestions are welcome}
+  \end{itemize}
+\end{frame}
+
+\section{Summary and conclusion}
+
+\begin{frame}{Summary and conclusion}
+  \vspace{0.0cm}
+  {\Large In summary:}
+  \begin{enumerate}
+    \setlength\itemsep{0.7em}
+    \item{BESIII analysis done, held up by deadweight in the review committee}
+    \item{Model-independent value of $\gamma$ has a $4\sigma$ tension with LHCb combination, and I have no idea where the bug is}
+  \end{enumerate}
+  \vspace{0.4cm}
+  {\Large Next steps:}
+  \begin{itemize}
+    \setlength\itemsep{0.7em}
+    \item{Assist Warwick+Bristol groups with TORCH testbeam data}
+    \item{Study PID separation with testbeam data}
+    \item{Make a thesis writing plan}
+  \end{itemize}
 \end{frame}
 
 \end{document}
